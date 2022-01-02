@@ -28,8 +28,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sizer(
         builder: (context, orientation, deviceType) {
-          return BlocProvider(
-            create: (BuildContext context) => AppCubit()..changeAppMode(fromShared: isDark),
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (BuildContext context) => NewsCubit()..getBusiness(),),
+              BlocProvider(create: (BuildContext context) => AppCubit()..changeAppMode(fromShared: isDark),),
+            ],
             child: BlocConsumer<AppCubit, AppStates>(
               listener: (context, state){},
               builder: (context, state){
@@ -116,7 +119,6 @@ class MyApp extends StatelessWidget {
                 );
               },
             ),
-
           );
         },
     );

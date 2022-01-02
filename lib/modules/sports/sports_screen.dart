@@ -16,7 +16,7 @@ class SportsScreen extends StatelessWidget {
         var list=NewsCubit.get(context).sport;
         return Conditional.single(
             context: context,
-            conditionBuilder: (BuildContext context) => list.length > 0,
+            conditionBuilder: (BuildContext context) => list.isNotEmpty,
             widgetBuilder: (BuildContext context) {
               return ListView.separated(
                 physics: const BouncingScrollPhysics(),
@@ -29,7 +29,7 @@ class SportsScreen extends StatelessWidget {
                     color: Colors.grey[300],
                   ),
                 ),
-                itemCount: 10,
+                itemCount: list.length,
               );
             },
             fallbackBuilder: (context) => const Center(child: CircularProgressIndicator())

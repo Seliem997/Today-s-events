@@ -75,7 +75,7 @@ class NewsCubit extends Cubit<NewsStates>{
 //       query: { 'resultType' : 'articles' , 'keyword' : 'Bitcoin' ,'keyword' : 'Ethereum' ,'keywordOper' : 'or' ,'lang' : 'eng' ,'articlesSortBy' : 'date' ,'includeArticleConcepts' : 'true', 'includeArticleCategories' : 'true' , 'articleBodyLen' : '300', 'articlesCount' : '10' , 'apikey' : 'd9083f1b-74e1-46af-8190-dbcf992e077e' , },
 
       url: 'v2/top-headlines',
-      query: { 'country' : 'eg' , 'category' : 'business' , 'apikey' : '65f7f556ec76449fa7dc7c0069f040ca' , },
+      query: { 'country' : 'eg' , 'category' : 'business' , 'apikey' : 'f998471c838e4f7dbcfd7908891793c5' , },
 
     ).then((value) {
 
@@ -106,7 +106,7 @@ class NewsCubit extends Cubit<NewsStates>{
       DioHelper.getData(
 
         url: 'v2/top-headlines',
-        query: { 'country' : 'eg' , 'category' : 'sports' , 'apikey' : '65f7f556ec76449fa7dc7c0069f040ca' , },
+        query: { 'country' : 'eg' , 'category' : 'sports' , 'apikey' : 'f998471c838e4f7dbcfd7908891793c5' , },
 
       ).then((value) {
 
@@ -127,7 +127,7 @@ class NewsCubit extends Cubit<NewsStates>{
     }
   }
 
- List<dynamic> science=[];
+  List<dynamic> science=[];
 
   void getScience(){
     emit(NewsGetScienceLoadingState());
@@ -136,7 +136,7 @@ class NewsCubit extends Cubit<NewsStates>{
       DioHelper.getData(
 
         url: 'v2/top-headlines',
-        query: { 'country' : 'eg' , 'category' : 'science' , 'apikey' : '65f7f556ec76449fa7dc7c0069f040ca' , },
+        query: { 'country' : 'eg' , 'category' : 'science' , 'apikey' : 'f998471c838e4f7dbcfd7908891793c5' , },
 
       ).then((value) {
 
@@ -156,6 +156,37 @@ class NewsCubit extends Cubit<NewsStates>{
       emit(NewsGetScienceSuccessState());
     }
 
+
+  }
+
+  List<dynamic> search=[];
+
+  void getSearch(String value){
+
+    emit(NewsGetSearchLoadingState());
+
+    if(search.isEmpty){
+      DioHelper.getData(
+
+        url: 'v2/everything',
+        query: { 'q' : value , 'apikey' : 'f998471c838e4f7dbcfd7908891793c5' , },
+
+      ).then((value) {
+
+        search = value.data['articles'];
+        print(search[0]['title']);
+
+        emit(NewsGetSearchSuccessState());
+
+      }).catchError((onError){
+        print('error is// ${onError.toString()}');
+
+        emit(NewsGetSearchErrorState(onError.toString()));
+
+      });
+    }else{
+      emit(NewsGetSearchSuccessState());
+    }
 
   }
 
